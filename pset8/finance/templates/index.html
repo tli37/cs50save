@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+
+{% block script %}
+
+
+{% endblock %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+
+
+    <table id="ElTable">
+        <tr>
+            <th> Symbol </th>
+            <th> Company </th>
+            <th> Shares </th>
+            <th> Price </th>
+            <th> Total </th>
+        </tr>
+        {% for i in portfolio %}
+        <tr>
+            <td> {{i.symbol}}</td>
+            <td> {{i.company}}</td>
+            <td> {{i.shares}}</td>
+            <td> {{i.stockprice}}</td>
+            <td> {{i.holdings}}</td>
+        </tr>
+        {% endfor %}
+         <tr>
+            <td> Cash </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> {{cash}}</td>
+        </tr>
+        <tr>
+            <th> </th>
+            <th> </th>
+            <th> </th>
+            <th> </th>
+            <th> {{sum41}} </th>
+        </tr>
+    </table>
+
+
+
+{% endblock %}
+

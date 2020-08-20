@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+
+{% block script %}
+
+
+{% endblock %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+
+
+    <table>
+        <tr>
+            <th> Symbol </th>
+            <th> Shares </th>
+            <th> Price </th>
+            <th> Transacted </th>
+        </tr>
+        {% for i in history %}
+        <tr>
+            <td> {{i.symbol}}</td>
+            <td> {{i.shares}}</td>
+            <td> {{i.price}}</td>
+            <td> {{i.date}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+
+{% endblock %}
+
