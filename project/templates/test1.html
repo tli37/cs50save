@@ -1,0 +1,42 @@
+	date = '{{date}}';
+	datearray=[];
+	datearray= date;
+	datearray= datearray.replace("[","");
+	datearray= datearray.replace("]","");
+	datearray= datearray.replace(/&#39;/g,"");
+	datearray= datearray.replace(/ /g,"");
+	datearray= datearray.split(",");
+	
+	
+	
+	
+	for i in range(len(weightdata)):
+        squatweight.append(weightdata[i]['squatweight'] )
+        squatrep.append(weightdata[i]['squatrep'] )
+
+        date.append(weightdata[i]['date'] )
+
+        #check if nonevalue
+        #add 0 instead of "none", else is volume for day #squats
+        if weightdata[i]['squatrep'] == None or weightdata[i]['squatweight'] == None:
+            svolume.append(0)
+            dailyvolume = 0
+        else:
+            squatpoorest1rm.append(oneRM(weightdata[i]['squatweight'], weightdata[i]['squatrep']))
+            spoordate.append(weightdata[i]['date'])
+            dailyvolume = weightdata[i]['squatrep'] * weightdata[i]['squatweight']
+            svolume.append(dailyvolume)
+                   #check if none or empty
+            if weightdata[i]['RPE'] != None and isinstance(weightdata[i]['RPE'], int) == True :
+                #RPE factor * 1RM calculation
+                est1rm.append( round( RPEcalc(weightdata[i]['RPE'], weightdata[i]['squatrep'] ) * oneRM(weightdata[i]['squatweight'], weightdata[i]['squatrep']) , 1))
+                est1rmdate.append(weightdata[i]['date'])
+
+        #check if same date as before, add to existing volume for the day
+        if datecheck == weightdata[i]['date']:
+            totsvolume[len(totsvolume)-1] = totsvolume[len(totsvolume)-1] + dailyvolume
+        else:
+            totsvolume.append(dailyvolume)
+            totsdate.append(weightdata[i]['date'])
+            #check next day
+            datecheck = weightdata[i]['date']

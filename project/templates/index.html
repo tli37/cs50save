@@ -1,0 +1,293 @@
+{% extends "layout.html" %}
+
+
+{% block script %}
+
+	<script src="https://cdn.plot.ly/plotly-1.2.0.min.js"></script>
+
+{% endblock %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+
+    <div id="plot1" onload="Plotly.newPlot()" style="width:750px;height:350px;"></div>
+    <div id="plot2" onload="Plotly.newPlot()" style="width:750px;height:350px;"></div>
+    <div id="plot3" onload="Plotly.newPlot()" style="width:750px;height:350px;"></div>
+    <div id="plot4" onload="Plotly.newPlot()" style="width:750px;height:350px;"></div>
+
+	<h3> Personal Records </h3>
+	<table id="squat_prtable">
+        <tr>
+            <th style="border-right: 1px solid black"> Squat reps </th>
+            <th> Squat weight </th>
+        </tr>
+        {% for i in range(0, len1) %}
+        <tr>
+		    <td> {{ prsquatrep[i] }} </td>
+		    <td> {{ prsquatweight[i] }} </td>
+		</tr>
+		{% endfor %}
+	</table>
+	<br>
+	<table id="bench_prtable">
+    <tr>
+            <th style="border-right: 1px solid black"> Bench reps </th>
+            <th> Bench weight </th>
+        </tr>
+        {% for i in range(0, len2) %}
+        <tr>
+		    <td> {{ prbenchrep[i] }} </td>
+		    <td> {{ prbenchweight[i] }} </td>
+		</tr>
+		{% endfor %}
+	</table>
+	<br>
+	<table id="dl_prtable">
+        <tr>
+            <th style="border-right: 1px solid black"> Deadlift reps </th>
+            <th> Deadlift weight </th>
+        </tr>
+        {% for i in range(0, len3) %}
+        <tr>
+		    <td> {{ prdlrep[i] }} </td>
+		    <td> {{ prdlweight[i] }} </td>
+		</tr>
+		{% endfor %}
+	</table>
+
+
+{% endblock %}
+{% block scripttwo %}
+	<script>
+
+	//dates have to reformat to work in Plotly
+	function reformat(x){
+		var array = [];
+		array = x;
+		array = array.replace("[","");
+		array = array.replace("]","");
+		array = array.replace(/&#39;/g,"");
+		array = array.replace(/ /g,"");
+		array = array.split(",");
+		return array;
+	}
+
+	squatweight = {{squatweight}};
+	squatrep = {{squatrep}};
+	benchweight = {{benchweight}};
+	benchrep = {{benchrep}};
+	dlweight = {{dlweight}};
+	dlrep = {{dlrep}};
+
+	squatpoorest1rm = {{squatpoorest1rm}};
+	benchpoorest1rm = {{benchpoorest1rm}};
+	dlpoorest1rm = {{dlpoorest1rm}};
+
+	squatest1rm = {{squatest1rm}};
+	benchest1rm = {{benchest1rm}};
+	dlest1rm = {{dlest1rm}};
+
+	prsquatrep = {{prsquatrep}};
+	prsquatweight = {{prsquatweight}};
+	prsquat1rm= {{prsquat1rm}};
+	prbenchrep = {{prbenchrep}};
+	prbenchweight = {{prbenchweight}};
+	prbench1rm= {{prbench1rm}};
+	prdlrep = {{prdlrep}};
+	prdlweight = {{prdlweight}};
+	prdl1rm= {{prdl1rm}};
+
+	svol = {{svol}};
+	bvol={{bvol}};
+	dlvol = {{dlvol}};
+
+	squatdate = '{{squatdate}}';
+	benchdate = '{{benchdate}}';
+	dldate = '{{dldate}}';
+	volsdate = '{{volsdate}}';
+	volbdate = '{{volbdate}}';
+	voldldate = '{{voldldate}}';
+
+	spoordate = '{{spoordate}}';
+	bpoordate = '{{bpoordate}}';
+	dlpoordate = '{{dlpoordate}}';
+
+	squatest1rmdate = '{{squatest1rmdate}}';
+	benchest1rmdate = '{{benchest1rmdate}}';
+	dlest1rmdate = '{{dlest1rmdate}}';
+
+	prsquatdate = '{{prsquatdate}}';
+	prbenchdate = '{{prbenchdate}}';
+	prdldate = '{{prdldate}}';
+
+	squatdate = reformat(squatdate);
+	benchdate = reformat(benchdate);
+	dldate = reformat(dldate);
+	volsdate= reformat(volsdate);
+	volbdate= reformat(volbdate);
+	voldldate= reformat(voldldate);
+
+	spoordate = reformat(spoordate);
+	bpoordate = reformat(bpoordate);
+	dlpoordate = reformat(dlpoordate);
+
+	squatest1rmdate = reformat(squatest1rmdate);
+	benchest1rmdate = reformat(benchest1rmdate);
+	dlest1rmdate = reformat(dlest1rmdate);
+
+	prsquatdate = reformat(prsquatdate);
+	prbenchdate = reformat(prbenchdate);
+	prdldate = reformat(prdldate);
+
+   //plot1
+	var trace1a = {
+		x: spoordate ,
+		y: squatpoorest1rm,
+		mode: 'lines',
+		name: 'less accurate estimated 1RM'
+	};
+	var trace1b = {
+		x: squatest1rmdate ,
+		y: squatest1rm ,
+		mode: 'lines+markers',
+		marker: { size: 8},
+		name: 'estimated 1RM with RPE'
+	};
+
+	var trace1c = {
+		x: prsquatdate,
+		y: prsquat1rm ,
+		mode: 'markers',
+		marker: {size: 10},
+		name: 'PRs - 1RM estimation'
+	};
+
+	var data1 = [trace1a, trace1b, trace1c];
+
+	var layout1= {
+		title: 'Squat 1 RM',
+		margin: {
+			t: 25
+		}
+	};
+
+	plot1 = document.getElementById('plot1');
+	Plotly.newPlot( plot1, data1, layout1);
+
+	//plot2 Bench 1RM
+	var trace2a = {
+		x: bpoordate ,
+		y: benchpoorest1rm,
+		mode: 'lines',
+		name: 'less accurate estimated 1RM'
+	};
+	var trace2b = {
+		x: benchest1rmdate ,
+		y: benchest1rm ,
+		mode: 'lines+markers',
+		marker: { size: 8},
+		name: 'estimated 1RM with RPE'
+	};
+
+	var trace2c = {
+		x: prbenchdate,
+		y: prbench1rm ,
+		mode: 'markers',
+		marker: {size: 10},
+		name: 'PRs - 1RM estimation'
+	};
+
+	var data2 = [trace2a, trace2b, trace2c];
+
+	var layout2= {
+		title: 'Bench 1 RM',
+		margin: {
+			t: 25
+		}
+	};
+
+	plot2 = document.getElementById('plot2');
+	Plotly.newPlot( plot2, data2, layout2);
+
+
+	//plot3 DL 1RM
+	var trace3a = {
+		x: dlpoordate ,
+		y: dlpoorest1rm,
+		mode: 'lines',
+		name: 'less accurate estimated 1RM'
+	};
+	var trace3b = {
+		x: dlest1rmdate ,
+		y: dlest1rm ,
+		mode: 'lines+markers',
+		marker: { size: 8},
+		name: 'estimated 1RM with RPE'
+	};
+
+	var trace3c = {
+		x: prdldate,
+		y: prdl1rm ,
+		mode: 'markers',
+		marker: {size: 10},
+		name: 'PRs - 1RM estimation'
+	};
+
+	var data3 = [trace3a, trace3b, trace3c];
+
+	var layout3= {
+		title: 'Deadlift 1 RM',
+		margin: {
+			t: 25
+		}
+	};
+
+	plot3 = document.getElementById('plot3');
+	Plotly.newPlot( plot3, data3, layout3);
+
+	//plot 4 Training Vol
+	var trace4a = {
+		x: volsdate ,
+		y: svol,
+		mode: 'lines',
+		name: 'Squat volume'
+	};
+	var trace4b = {
+		x: volbdate ,
+		y: bvol ,
+		mode: 'lines',
+		name: 'Bench volume'
+	};
+
+	var trace4c = {
+		x: voldldate,
+		y: dlvol ,
+		mode: 'lines',
+		name: 'Deadlift volume'
+	};
+	var data4 = [trace4a, trace4b, trace4c];
+
+	var layout4= {
+		title: 'Training Voulme',
+		margin: {
+			t: 25
+		}
+	};
+
+	plot4 = document.getElementById('plot4');
+	Plotly.newPlot( plot4, data4, layout4);
+
+
+
+
+	</script>
+
+
+
+{% endblock %}
+
+
+

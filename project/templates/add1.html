@@ -1,0 +1,203 @@
+{% extends "layout.html" %}
+
+
+{% block script %}
+    <script type='text/javascript'>
+        function addFields(clicked_id){
+            var input1 = document.createElement("input");
+            var input2 = document.createElement("input");
+            // vilken container skickar ID
+            id = document.getElementById(clicked_id).value;
+            container = document.getElementById("1");
+
+            var input1 = document.createElement("input");
+            var input2 = document.createElement("input");
+
+            input1.type ="text";
+            input1.placeholder="weight";
+            input2.type ="text";
+            input2.placeholder="reps";
+
+            //check value to assign title and input names
+
+            if (id == 1){
+
+                input1.name ="squatweight";
+                input2.name ="squatreps";
+            } else if ( id == 2){
+
+                input1.name ="benchweight";
+                input2.name ="benchreps";
+
+            } else {
+
+                input1.name ="deadliftweight";
+                input2.name ="deadliftreps";
+
+            }
+
+              //submit button remove old one
+            removeSbutton();
+            buttoncount = 1;
+
+            var s = document.createElement("input");
+                s.setAttribute("type", "submit");
+                s.setAttribute("value", "submit");
+                s.setAttribute("id", "sbutton");
+
+
+            //append the rows and shit
+
+            container.appendChild(input1);
+            container.appendChild(input2);
+
+            container.appendChild( document.createElement("br"));
+            container.appendChild(s);
+
+
+
+        }
+
+        function dropFunction(){
+            document.getElementById("dropid").style.display = "block";
+        }
+
+        var changeSelection = function () {
+            //Hide all of the elements
+            hideAll();
+            createNew();
+
+        };
+        var hideAll = function () {
+            //Loop through the elements
+            for (var i = 0; i <= 3; i++) {
+                //Hide each one
+                document.getElementById("dropid").style.display = "none";
+            }
+        };
+
+        function createNew(){
+
+            exerid = document.getElementById("dropid").value;
+
+            form1 = document.getElementById("1");
+
+            //create fields
+
+            var input1 = document.createElement("input");
+            var input2 = document.createElement("input");
+
+            input1.type ="text";
+            input1.placeholder="weight";
+            input2.type ="text";
+            input2.placeholder="reps";
+
+            //check value to assign title and input names
+            var new3 =document.createElement("h3");
+            if (exerid == 1){
+                var title = "Squat";
+                input1.name ="squatweight";
+                input2.name ="squatreps";
+            } else if (exerid == 2){
+                var title = "Bench Press";
+                input1.name ="benchweight";
+                input2.name ="benchreps";
+
+            } else {
+                var title = "Deadlift";
+                input1.name ="deadliftweight";
+                input2.name ="deadliftreps";
+
+            }
+                new3.innerHTML = title;
+
+            if (formcount == 0){
+                var input3 = document.createElement("input");
+                input3.type = "date";
+                //document.getElementsByTagName('form')[0].appendChild(input3);
+                formcount = 1;
+            }
+
+            document.getElementsByTagName('form')[0].appendChild(new3);
+
+            //submit button
+            //remove old one
+            if ( buttoncount > 0){
+                 removeSbutton();
+            }
+            buttoncount = 1;
+
+            var s = document.createElement("input");
+                s.setAttribute("type", "submit");
+                s.setAttribute("value", "submit");
+                s.setAttribute("id", "sbutton");
+
+
+            //append the rows and shit
+
+            form1.appendChild(input1);
+            form1.appendChild(input2);
+            form1.appendChild( document.createElement("br"));
+            form1.appendChild(s);
+
+            //document.getElementsByTagName('form')[0].appendChild(form1);
+
+            // create a new add field button
+            var fieldbutton = document.createElement("button");
+            fieldbutton.setAttribute('onclick', "addFields(this.id)");
+            fieldbutton.setAttribute('id', "add"+exerid);
+            fieldbutton.setAttribute('value', exerid);
+            fieldbutton.innerHTML="Add Sets: "+ title;
+
+            document.getElementsByTagName('p')[0].appendChild(fieldbutton);
+
+
+        }
+
+        buttoncount=0;
+        formcount=0;
+
+        function removeSbutton(){
+
+            var element = document.getElementById("sbutton");
+            element.parentNode.removeChild(element);
+
+        }
+
+
+
+    </script>
+
+
+{% endblock %}
+
+{% block title %}
+    Add Workout Entry
+{% endblock %}
+
+{% block main %}
+
+
+
+
+    <form id="1" action="/add" method="post">
+        <input type="date" id="dateid" name="date">
+
+
+          <button type="button" onclick="dropFunction()" class="dropbtn"> add exercise </button>
+          <select name="dropid" onchange ="changeSelection()" id="dropid" style="display:none;" >
+                <option value="initial" selected>-- Choose an exercise --</option>
+                <option value="1">Squat </option>
+                <option value="2">Bench Press </option>
+                <option value="3">Deadlift </option>
+            </select>
+        <br>
+
+    </form>
+
+    <p>
+
+    </p>
+
+
+{% endblock %}
